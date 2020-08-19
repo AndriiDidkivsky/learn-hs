@@ -115,3 +115,18 @@ removeOdd xs = removeOddAcc [] xs
     removeOddAcc acc (x:xs)
       | odd x = removeOddAcc acc xs
       | otherwise = removeOddAcc (x: acc) xs
+
+
+fastClosestPoint :: Point -> [Point] -> Point
+fastClosestPoint point [p] = p 
+fastClosestPoint point (p:ps) = 
+  fastClosestPointAcc (distance point p, (p)) point ps
+  where 
+    fastClosestPointAcc :: (Double, Point) -> Point -> [Point] -> Point
+    fastClosestPointAcc acc p [] = snd acc
+    fastClosestPointAcc (md, mp) point (p:ps)
+      | md <= cd = fastClosestPointAcc (md, mp) point ps
+      | otherwise = fastClosestPointAcc (cd, p) point ps
+      where
+        cd = distance point p
+
